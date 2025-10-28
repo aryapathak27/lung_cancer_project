@@ -1,0 +1,276 @@
+# ============================================
+# LUNG CANCER DETECTION PROJECT - .gitignore
+# ============================================
+
+# ==================
+# SECURITY - CRITICAL
+# ==================
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+secrets/
+*.secret
+
+# Hugging Face Token
+hf_token.txt
+huggingface_token.txt
+
+# ==================
+# PYTHON
+# ==================
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+pytestdebug.log
+
+# ==================
+# VIRTUAL ENVIRONMENTS
+# ==================
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+virtualenv/
+
+# ==================
+# FLASK
+# ==================
+instance/
+.webassets-cache
+.flask_session/
+
+# ==================
+# DATABASE
+# ==================
+*.db
+*.sqlite
+*.sqlite3
+database/*.db
+database/*.sqlite
+database/*.sqlite3
+
+# Database migrations (keep migration folder, ignore db files)
+migrations/versions/*.pyc
+alembic.ini
+
+# ==================
+# UPLOADED & PROCESSED FILES
+# ==================
+uploads/*
+!uploads/.gitkeep
+
+processed/*
+!processed/.gitkeep
+
+reports/*
+!reports/.gitkeep
+
+# Temporary files
+temp/
+tmp/
+*.tmp
+
+# ==================
+# DATASET (Large files - optional)
+# ==================
+# Uncomment if dataset is too large for version control
+# dataset/
+# *.dcm
+# *.DICOM
+
+# Keep dataset structure but not images
+dataset/Benign cases/*.jpg
+dataset/Benign cases/*.png
+dataset/Malignant cases/*.jpg
+dataset/Malignant cases/*.png
+dataset/Normal cases/*.jpg
+dataset/Normal cases/*.png
+
+# ==================
+# MACHINE LEARNING
+# ==================
+# Model files (not needed since using HF API)
+*.h5
+*.hdf5
+*.pkl
+*.pickle
+*.pt
+*.pth
+*.onnx
+*.pb
+saved_model/
+checkpoints/
+
+# ==================
+# LOGS
+# ==================
+*.log
+logs/
+*.log.*
+log_*.txt
+
+# ==================
+# IDE / EDITORS
+# ==================
+# VSCode
+.vscode/
+.code-workspace
+
+# PyCharm
+.idea/
+*.iml
+*.ipr
+*.iws
+.idea_modules/
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+.\#*
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb
+
+# Spyder
+.spyderproject
+.spyproject
+
+# ==================
+# OPERATING SYSTEM
+# ==================
+# MacOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# ==================
+# DOCKER
+# ==================
+# Exclude Docker volumes and temp files
+docker-compose.override.yml
+.docker/
+
+# ==================
+# DOCUMENTATION BUILD
+# ==================
+docs/_build/
+docs/.doctrees/
+site/
+
+# ==================
+# BACKUP FILES
+# ==================
+*.bak
+*.backup
+*.old
+*-backup.*
+*-old.*
+
+# ==================
+# TESTING
+# ==================
+.tox/
+.nox/
+htmlcov/
+.coverage
+.pytest_cache/
+test-results/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# ==================
+# PACKAGE MANAGERS
+# ==================
+node_modules/
+package-lock.json
+yarn.lock
+
+# ==================
+# MISC
+# ==================
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# SSL certificates
+*.crt
+*.cer
+*.der
+
+# API response cache
+api_cache/
+.cache/
+
+# Temporary upload chunks
+*.part
