@@ -274,3 +274,9 @@ api_cache/
 
 # Temporary upload chunks
 *.part
+
+*.mp4
+*.mkv
+*.avi
+*.mov
+*.zip
