@@ -1,0 +1,23 @@
+# Core web backend
+Flask==3.0.0
+Flask-CORS==4.0.0
+Flask-SQLAlchemy==3.1.1
+Flask-Limiter==3.5.0
+
+# Core ML
+keras==3.0.5      # or latest 3.x (must match what works for you)
+tensorflow==2.15.0
+
+# Image processing
+Pillow==10.1.0
+
+# Utilities
+numpy==1.24.3
+python-dotenv==1.0.0
+requests==2.31.0
+
+# Optional/for completeness (you may not need them)
+PyJWT==2.8.0         # only if using JWT tokens
+reportlab==4.0.7     # PDF/report generation (optional)
+gunicorn==21.2.0     # production WSGI server
+pytest==7.4.3        # testing framework

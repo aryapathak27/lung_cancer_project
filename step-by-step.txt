@@ -1,0 +1,231 @@
+Step 1: Load Environment Variables in Flask Application
+Create a config.py in your app directory and add code to load environment variables using python-dotenv.
+
+File: app/config
+
+---
+Step 2: Flask App Initialization in app/__init__.py
+
+File: app/__init__.py
+
+---
+Step 3: Create Basic File Upload Endpoint
+Let's start by allowing users to upload an image. You'll need a blueprint dedicated to API routes. Create a folder named api in app, and then add a basic upload handler.
+
+File: app/api/upload.py
+
+---
+Step 4: Register the Upload Blueprint in Main App
+Now, connect your upload endpoint to the Flask app so requests to /api/upload work.
+
+File: app/__init__.py
+(Add the blueprint registration inside the create_app() function.)
+
+---
+Step 5: Hugging Face Inference Client Service
+Now, add a service in services that wraps all calls to the Hugging Face Inference API using your token from the environment.
+
+File: app/services/huggingface_service.py
+
+---
+Step 6: Create the Prediction Endpoint Using Hugging Face Service
+
+File: app/api/predict.py
+
+What this does:
+
+Accepts a JSON POST with a file_id (from your upload endpoint).
+
+Looks up the image, passes it to your Hugging Face service, and returns model predictions in the exact format discussed earlier.
+
+---
+Step 7: Register the Prediction Blueprint in Your App
+Update your app/__init__.py to include the prediction blueprint. This ensures both file upload and prediction endpoints are available in your Flask app.
+
+File: app/__init__.py
+
+---
+Step 8: Create the Main Entry Point (run.py)
+This file lets you start the development server and ensures everything wires together using your app factory.
+
+File: run.py (at project root)
+
+---
+Step 9.1: Test the Full Upload and Predict Workflow 
+Here's how to check everything you’ve built so far using cURL:
+
+A. Step 1: Upload an Image
+
+bash
+curl -X POST http://localhost:5000/api/upload \
+  -F "file=@your_image.jpg"
+You'll receive:
+
+json
+{
+  "success": true,
+  "file_id": "e2ab3cf8ab6d4be2b7fd6a2ea86a9703_your_image.jpg"
+}
+B. Step 2: Get Prediction Using Hugging Face API
+
+bash
+curl -X POST http://localhost:5000/api/predict \
+  -H "Content-Type: application/json" \
+  -d '{"file_id": "e2ab3cf8ab6d4be2b7fd6a2ea86a9703_your_image.jpg"}'
+You’ll receive, for example:
+
+json
+{
+  "success": true,
+  "prediction_class": "Malignant",
+  "confidence": 87.15,
+  "all_scores": {
+    "Malignant": 87.15,
+    "Normal": 5.23,
+    "Benign": 7.62
+  }
+}
+C. What You Have Built (So Far)
+
+Production-ready Flask app factory: app/__init__.py 
+
+Environment-based configuration: config.py 
+
+File upload endpoint: /api/upload (accepts PNG, JPG) 
+
+Real-time prediction endpoint: /api/predict (integrates Hugging Face API, no GPU/local ML needed) 
+
+API blueprints registered: endpoints are modular and scalable
+
+Main entry file: run.py for local server
+
+Step 9.2- Test the Full Upload and Predict Workflow 
+Here's how to check everything you’ve built so far using Postman:
+
+A. Upload an Image (POST /api/upload)
+Method: POST
+
+URL: http://localhost:5000/api/upload
+
+Go to "Body" tab
+
+Select form-data
+
+Key = file (type: File)
+
+Value = (choose a local image file, e.g., your_image.jpg)
+
+Click "Send"
+
+You’ll get a response like:
+
+json
+{
+  "success": true,
+  "file_id": "e2ab3cf8ab6d4be2b7fd6a2ea86a9703_your_image.jpg"
+}
+B. Get Prediction (POST /api/predict)
+Method: POST
+
+URL: http://localhost:5000/api/predict
+
+Go to "Body" tab
+
+Select raw
+
+Set type to JSON
+
+Enter:
+
+json
+{
+  "file_id": "e2ab3cf8ab6d4be2b7fd6a2ea86a9703_your_image.jpg"
+}
+(Replace the file_id with the one returned from upload step)
+
+Click "Send"
+
+You’ll get a response like:
+
+json
+{
+  "success": true,
+  "prediction_class": "Malignant",
+  "confidence": 87.15,
+  "all_scores": {
+    "Malignant": 87.15,
+    "Normal": 5.23,
+    "Benign": 7.62
+  }
+}
+Summary:
+
+In Postman, uploading uses form-data with the key file.
+
+Predict uses raw JSON with file_id from upload’s response.
+
+--------------------------------
+
+
+
+Step 1: Download the Model File from Hugging Face
+Go to the model’s Hugging Face page:
+https://huggingface.co/Chinwendu/lung_ct_detection_model
+
+Find the file named:
+
+lung_ct_model.keras or any .h5 file (for Keras/Tensorflow—use latest if multiple)
+
+Click on the filename, then click Download.
+
+Save the model file to a new folder in your project root:
+
+text
+ml_models/
+  └── lung_ct_model.keras
+
+---
+Step 2: Implement Local Model Loader and Prediction Service
+Create a new file:
+File: app/services/local_model_service.py
+
+What this does:
+
+Loads your local .keras model at construction time (one time per server start—fast).
+
+Preprocesses any image to the model-required format: 256x256, RGB, scaled 0-1.
+
+Makes a prediction and translates output to user-friendly format.
+
+---
+Step 3: Update the Prediction Endpoint to Use the Local Model Service
+Now, modify your app/api/predict.py to use LocalModelService instead of the Hugging Face API.
+
+File: app/api/predict.py
+
+Key changes:
+
+Uses your local Keras model for prediction.
+
+Instantiates the model once (top-level), so it’s fast for multiple requests.
+
+Keeps the API response format consistent.
+
+---
+Step-4:
+For running your local Keras model as described, you only need:
+
+tensorflow (includes Keras)
+
+Pillow (for image loading and conversion, already in your requirements)
+
+numpy (for numerical operations; automatically installed by TensorFlow but add explicitly to requirements for safety)
+
+Your updated requirements.txt should ensure you have:
+
+text
+tensorflow==2.15.0
+Pillow==10.1.0
+numpy==1.24.3
+
+---
